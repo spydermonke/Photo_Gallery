@@ -12,6 +12,7 @@ function UserGallery() {
   const [enlargedImageIndex, setEnlargedImageIndex] = useState(null);
   const [showRenameInput, setShowRenameInput] = useState(false);
   const [newImageName, setNewImageName] = useState('');
+  const [showImageOverlay, setShowImageOverlay] = useState(false);
 
 
   const handleKeyDown = (event) => {
@@ -19,10 +20,16 @@ function UserGallery() {
       setCurrentIndex((prevIndex) => (prevIndex - 1 + user.imageUrls.length) % user.imageUrls.length);
     } else if (event.key === 'ArrowRight') {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % user.imageUrls.length);
+    }
+    else if (event.key === 'ArrowDown') {
+      setCurrentIndex((prevIndex) => (prevIndex + 3) % user.imageUrls.length);
+    }
+    else if (event.key === 'ArrowUp') {
+      setCurrentIndex((prevIndex) => (prevIndex - 3 + user.imageUrls.length) % user.imageUrls.length);
     } else if (event.key === 'Enter') {
-      setEnlargedImageIndex(currentIndex);
+      setShowImageOverlay(true);
     } else if (event.key === 'Escape') {
-      setEnlargedImageIndex(null);
+      setShowImageOverlay(false);
     }
   };
   
@@ -100,13 +107,13 @@ function UserGallery() {
                     imagename={img.name}
                     isCurrent={index === currentIndex}
                     // onRemove={() => handleRemoveImage(index)}
-                    isEnlarged={index === enlargedImageIndex}
+                    isEnlarged={showImageOverlay && index === currentIndex}
                     onRename={handleRenameImage}
                   />
                   // </div>
                 ))
               ) : (
-                <div>No such data found</div>
+                <div>OOPS! Please add Images First</div>
               )}
             </div>
           </div>
